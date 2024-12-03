@@ -22,12 +22,12 @@ Learning rate, batch size, and RNN units are optimized for better performance.
 
 # Dependencies
 The following libraries are required to run the project:
-Python 3.10.11
-tensorflow==2.15.0
-pandas 
-numpy 
-scikit-learn
-tensorboard
-matplotlib
-streamlit
+Python 3.10.11,
+tensorflow==2.15.0,
+pandas,
+numpy,
+scikit-learn,
+tensorboard,
+matplotlib,
+streamlit,
 scikeras
