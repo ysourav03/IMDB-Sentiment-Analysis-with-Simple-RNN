@@ -4,30 +4,31 @@ import tensorflow as tf
 from tensorflow.keras.datasets import imdb
 from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.models import load_model
+import streamlit as st
+from datetime import date
+
+st.write("TensorFlow version:", tf.__version__)
+st.write("Keras version:", tf.keras.__version__)
+
 
 ## Load the IMDB dataset word index
 word_index = imdb.get_word_index()
 reverse_word_index = {value: key for key, value in word_index.items()}
 
-## Load the pre-trained model with ReLU activation
-# model = load_model('imdb_rnn_model.h5')
-
-# import os
-
-# if os.path.exists("imdb_rnn_model.h5"):
-#     print("File found: imdb_rnn_model.h5")
-# else:
-#     print("File NOT found: imdb_rnn_model.h5")
 
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(current_dir, "imdb_rnn_model.h5")
-
 print(f"Attempting to load model from: {model_path}")
-model = load_model(model_path,custom_objects={'time_major': False})
-# model = load_model(model_path)
-print("Model loaded successfully.")
+
+## Load the pre-trained model with ReLU activation
+model = load_model('imdb_rnn_model.h5')
+
+st.write("Model architecture:", model.summary())
+# Function to decode reviews
+def decode_review(encoded_review):
+    return ' '.join([reverse_word_index.get(i - 3, '?') for i in encoded_review])
 
 # Function to preprocess user input
 def preprocess_text(text):
@@ -35,13 +36,6 @@ def preprocess_text(text):
     encoded_review = [word_index.get(word, 2) + 3 for word in words]
     padded_review = sequence.pad_sequences([encoded_review], maxlen=500)
     return padded_review
-
-# # Function to preprocess user input
-# def preprocess_text(text):
-#     words = text.lower().split()
-#     encoded_review = [word_index.get(word, 2) + 3 for word in words]  # 2 for unknown word and 3 for padding offset
-#     padded_review = sequence.pad_sequences([encoded_review], maxlen=500)  # Adjust maxlen according to your model's input requirement
-#     return padded_review
 
 
 ## WEB PAGE CODE ##
